@@ -1,0 +1,4 @@
+agd_iterations_at_budget18,ciphertext_multiplications,ciphertexts,complexity,gd_iterations_at_budget18,matrix_mult_depth,method,plaintext_multiplications,relinearizations
+,1,d,O(d^2),,1,Halevi-Shoup,0,1
+4,1,1,O(d),6,3,JKLS,2,3
+6,1,1,O(d),9,2,Proposed,1,2

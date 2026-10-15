@@ -1,0 +1,37 @@
+\begin{table}[!htb]
+\centering
+\small
+\renewcommand{\arraystretch}{1.03}
+\setlength{\tabcolsep}{5pt}
+\caption{Selected final metrics and runtimes.}
+\label{tab:results}
+\begin{tabular}{@{}l c r r@{}}
+\toprule
+Configuration & Metric & Final value & Runtime (s) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Part I}} \\
+DGD, line & Gap & \num{1.485e-01} & \num{2.641e-02} \\
+GT, line & Gap & \num{8.592e-04} & \num{3.766e-02} \\
+Dual dec., line & Gap & \num{4.137e-06} & \num{3.714e-02} \\
+ADMM, $\beta=1$ & Gap & \num{1.995e-14} & \num{7.363e-02} \\
+\addlinespace[2pt]
+\multicolumn{4}{@{}l}{\textit{Part II}} \\
+FedAvg $(20,5,50)$ const. & Obj. & \num{5.748e-04} & \num{1.940e-01} \\
+FedAvg $(20,5,50)$ dim. & Obj. & \num{5.581e-04} & \num{1.963e-01} \\
+FedAvg $(15,5,50)$ & Obj. & \num{1.950e-03} & \num{2.909e-01} \\
+FedAvg $(15,3,50)$ & Obj. & \num{1.710e-01} & \num{1.638e-01} \\
+SCAFFOLD $(20,5,50)$ & Obj. & \num{2.446e-05} & \num{2.084e-01} \\
+SCAFFOLD $(20,3,50)$ & Obj. & \num{2.360e-05} & \num{1.262e-01} \\
+\addlinespace[2pt]
+\multicolumn{4}{@{}l}{\textit{Part III}} \\
+Non-private DGD & Gap & \num{2.818e-01} & \num{3.670e-02} \\
+DP-DGD, $\epsilon=10$ & Gap & \num{1.588e+00} & \num{5.380e-02} \\
+DP-DGD, $\epsilon=1$ & Gap & \num{2.737e+00} & \num{5.352e-02} \\
+DP-DGD, $\epsilon=0.1$ & Gap & \num{1.239e+01} & \num{5.386e-02} \\
+\addlinespace[2pt]
+\multicolumn{4}{@{}l}{\textit{Part III ext.}} \\
+Non-private DGD & Gap & \num{7.195e-01} & \num{8.198e-01} \\
+DP-DGD, $\epsilon=10$ & Gap & \num{1.095e+00} & \num{1.241e+00} \\
+\bottomrule
+\end{tabular}
+\end{table}

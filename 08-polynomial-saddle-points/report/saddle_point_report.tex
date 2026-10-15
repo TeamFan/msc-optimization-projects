@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.3em}
+\setlist[itemize]{leftmargin=*,topsep=0.18em,itemsep=0.1em,parsep=0pt,partopsep=0pt}
+\setlist[enumerate]{topsep=0.18em,itemsep=0.1em,parsep=0pt,partopsep=0pt}
+\setlength{\abovedisplayskip}{7pt plus 1pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 1pt minus 2pt}
+\setlength{\abovedisplayshortskip}{5pt plus 1pt minus 2pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 2pt}
+\titlespacing*{\section}{0pt}{1.5ex plus .4ex minus .2ex}{0.7ex}
+\titlespacing*{\subsection}{0pt}{1.1ex plus .3ex minus .2ex}{0.5ex}
+\titlespacing*{\paragraph}{0pt}{0.8ex plus .2ex minus .1ex}{0.5em}
+
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+{\centering
+\Large\bfseries Report on \emph{The Saddle Point Problem of Polynomials}\par
+\vspace{0.15em}
+\normalsize Xiangyu LUO\par
+\normalsize March 2026\par
+}
+\vspace{0.1em}
+
+\section{Introduction}
+Let $X \subseteq \R^n$, $Y \subseteq \R^m$, and let $F(x,y)$ be a polynomial. A pair $(x^\ast,y^\ast) \in X \times Y$ is a saddle point if
+\[
+F(x^\ast,y) \leq F(x^\ast,y^\ast) \leq F(x,y^\ast)
+\quad
+\text{for all } x \in X,\ y \in Y.
+\]
+This means that $x^\ast$ minimizes $F(\cdot,y^\ast)$ over $X$, while $y^\ast$ maximizes $F(x^\ast,\cdot)$ over $Y$. From the definition one immediately gets
+\[
+\max_{y \in Y}\min_{x \in X} F(x,y) \leq F(x^\ast,y^\ast) \leq \min_{x \in X}\max_{y \in Y} F(x,y),
+\]
+and both inequalities become equalities when a saddle point exists. Saddle points therefore connect pointwise optimality with the global min-max value.
+
+This viewpoint is useful in several settings. In zero-sum games, an equilibrium is characterized by a min-max relation of exactly this kind. In robust optimization, one compares a decision with its worst admissible perturbation. Similar saddle-point formulations also appear in primal-dual models from imaging, inverse problems, and constrained optimization.
+
+Classical results rely on convexity in $x$, concavity in $y$, and compact convex feasible sets. Polynomial problems need not satisfy these hypotheses; saddle points may fail to exist, stationary points need not be global, and direct elimination is expensive. The computational goal is to find a saddle point when one exists and otherwise certify nonexistence.
+
+\section{Problem and Background}
+The feasible sets are basic semialgebraic sets:
+\[
+X=\{x \in \R^n : g_i(x)=0 \ (i \in E_1^X),\ g_i(x)\ge 0 \ (i \in E_2^X)\},
+\]
+\[
+Y=\{y \in \R^m : h_j(y)=0 \ (j \in E_1^Y),\ h_j(y)\ge 0 \ (j \in E_2^Y)\}.
+\]
+For a saddle point $(x^\ast,y^\ast)$, the points $x^\ast$ and $y^\ast$ solve the two lower-level problems
+\[
+\min_{x \in X} F(x,y^\ast),
+\qquad
+\max_{y \in Y} F(x^\ast,y).
+\]
+Hence KKT-type conditions are natural. Under a constraint qualification, there exist multipliers $\lambda_i,\mu_j$ such that
+\[
+\nabla_x F(x^\ast,y^\ast)=\sum_i \lambda_i \nabla g_i(x^\ast),
+\qquad
+\nabla_y F(x^\ast,y^\ast)=\sum_j \mu_j \nabla h_j(y^\ast),
+\]
+together with complementarity on inequality constraints. Here $a\perp b$ means $ab=0$. These relations are necessary, but not sufficient: they identify critical points, not necessarily saddle points.
+
+If the constraint tuples are nonsingular, the multipliers can be written as polynomial maps
+\[
+\lambda(x,y)=(\lambda_i(x,y))_{i\in E_1^X\cup E_2^X},
+\qquad
+\mu(x,y)=(\mu_j(x,y))_{j\in E_1^Y\cup E_2^Y},
+\]
+obtained from polynomial left inverses of the corresponding constraint matrices. Consequently, every saddle point must satisfy
+\[
+\nabla_x F(x,y)=\sum_i \lambda_i(x,y)\nabla g_i(x),
+\qquad
+\nabla_y F(x,y)=\sum_j \mu_j(x,y)\nabla h_j(y),
+\]
+as well as the corresponding complementarity conditions. This converts the saddle-point question into a family of polynomial optimization problems. 
+
+The following concepts appear repeatedly in the later sections.
+\begin{itemize}
+\item \textbf{Semialgebraic set:} a set described by finitely many polynomial equalities and inequalities.
+\item \textbf{KKT relations:} stationarity and complementarity conditions for constrained local optima.
+\item \textbf{Nonsingularity:} an assumption ensuring that the multipliers can be written polynomially in the variables.
+\item \textbf{Genericity:} a property that holds outside an exceptional algebraic set of coefficients.
+\item \textbf{Moment/SOS relaxation:} a semidefinite relaxation built from moment and localizing matrices.
+\item \textbf{Flat truncation:} a rank condition used to detect exactness and extract optimizers.
+\end{itemize}
+
+Lasserre's hierarchy is the computational tool used to solve these polynomial subproblems. It replaces them with a sequence of semidefinite relaxations; once one relaxation is exact, the true minimizers or maximizers can be extracted.
+
+\section{Methods}
+The procedure alternates between candidate generation and global verification. Polynomial criticality equations first produce candidate points. Each candidate is then tested by the two one-sided optimization problems from the saddle-point definition. If one test fails, the optimizer of the failed subproblem yields an exclusion inequality, and the refined problem is solved again.
+
+\begingroup
+\begin{algorithmic}[1]
+\State \textbf{Input:} polynomial objective $F(x,y)$, semialgebraic constraint tuples $g,h$, and multiplier maps $\lambda(x,y),\mu(x,y)$
+\State \textbf{Initialize:} start with no exclusion inequalities and no verified saddle points
+\Loop
+    \State build and solve the current upper-level polynomial problem
+    \If{the upper-level problem is infeasible}
+        \State \Return no saddle point exists
+    \EndIf
+    \State collect candidate points $(x^\ast,y^\ast)$
+    \ForAll{candidates $(x^\ast,y^\ast)$}
+        \State compute $\vartheta_1(y^\ast)=\min_{x\in X}F(x,y^\ast)$
+        \State compute $\vartheta_2(x^\ast)=\max_{y\in Y}F(x^\ast,y)$
+        \If{$\vartheta_1(y^\ast)=F(x^\ast,y^\ast)=\vartheta_2(x^\ast)$}
+            \State record $(x^\ast,y^\ast)$ as a saddle point
+        \Else
+            \State construct a valid exclusion inequality from the failed verification step
+            \State add this inequality to the upper-level problem
+        \EndIf
+    \EndFor
+    \If{a nonempty set of saddle points has been recorded}
+        \State \Return the recorded saddle point set
+    \EndIf
+\EndLoop
+\end{algorithmic}
+\endgroup
+
+\paragraph{Step 1: upper-level candidate problem.}
+The upper-level problem minimizes $F(x,y)$ over $X\times Y$ while also imposing the stationarity and complementarity relations derived from $\lambda(x,y)$ and $\mu(x,y)$, together with any exclusion inequalities produced in earlier iterations. The criticality equations are
+\[
+\nabla_x F(x,y)-\sum_i \lambda_i(x,y)\nabla g_i(x)=0,
+\qquad
+\nabla_y F(x,y)-\sum_j \mu_j(x,y)\nabla h_j(y)=0,
+\]
+together with
+\[
+0\leq \lambda_i(x,y)\perp g_i(x)\geq 0 \quad (i\in E_2^X), \qquad
+0\geq \mu_j(x,y)\perp h_j(y)\geq 0 \quad (j\in E_2^Y).
+\]
+Solving this problem produces candidate points. At this stage they satisfy the polynomial
+criticality system, but not yet the global saddle inequalities.
+
+\paragraph{Step 2: lower-level verification.}
+To decide whether a candidate $(x^\ast,y^\ast)$ is genuine, one solves
+\[
+\vartheta_1(y^\ast):=\min_{x \in X} F(x,y^\ast),
+\qquad
+\vartheta_2(x^\ast):=\max_{y \in Y} F(x^\ast,y).
+\]
+These are the two one-sided optimization problems in the definition of a saddle point. Therefore,
+\[
+(x^\ast,y^\ast)\text{ is a saddle point }
+\Longleftrightarrow
+\vartheta_1(y^\ast)=F(x^\ast,y^\ast)=\vartheta_2(x^\ast).
+\]
+It is convenient to introduce the \emph{saddle gap}
+\[
+\gamma(x^\ast,y^\ast):=\vartheta_2(x^\ast)-\vartheta_1(y^\ast).
+\]
+By definition of $\vartheta_1$ and $\vartheta_2$ one always has
+\[
+\vartheta_1(y^\ast)\leq F(x^\ast,y^\ast)\leq \vartheta_2(x^\ast),
+\]
+so $\gamma(x^\ast,y^\ast)\geq 0$, and $\gamma(x^\ast,y^\ast)=0$ holds exactly when the candidate
+satisfies the saddle inequalities. This step therefore supplies the global information missing from
+the KKT system.
+
+\paragraph{Step 3: exclusion inequalities.}
+If verification fails, the optimizer of the failed lower-level problem yields a valid inequality
+that removes the current bad candidate while preserving every true saddle point.
+
+Suppose $u \in X$ satisfies $F(u,y^\ast)<F(x^\ast,y^\ast)$. Then $(x^\ast,y^\ast)$ is not a saddle point.
+For any true saddle point $(x,y)$, the point $x$ minimizes $F(\cdot,y)$ over $X$, so
+\[
+F(x,y)\leq F(u,y),
+\qquad\text{hence}\qquad
+F(u,y)-F(x,y)\geq 0.
+\]
+Thus $F(u,y)-F(x,y)\ge 0$ is valid for all saddle points, but it is violated by the current false
+candidate.
+
+Likewise, if $v \in Y$ satisfies $F(x^\ast,v)>F(x^\ast,y^\ast)$, then every true saddle point $(x,y)$
+satisfies
+\[
+F(x,v)\leq F(x,y),
+\qquad\text{so}\qquad
+F(x,v)-F(x,y)\leq 0.
+\]
+This gives the second type of update. Repeating the process either verifies a saddle point or
+proves that the refined upper-level problem is infeasible.
+
+\paragraph{Step 4: semidefinite realization.}
+Each subproblem is a polynomial optimization problem of the form $\min p(z)$ subject to
+$\phi(z)=0$ and $\psi(z)\ge 0$. Lasserre's hierarchy replaces it with a moment relaxation:
+\[
+\min \langle p,w\rangle
+\quad
+\text{subject to } M_k(w)\succeq 0,\ L_{\phi}^{(k)}(w)=0,\ L_{\psi}^{(k)}(w)\succeq 0.
+\]
+Here $w$ is a truncated moment sequence, $M_k(w)$ is the moment matrix, and
+$L_{\phi}^{(k)}(w),L_{\psi}^{(k)}(w)$ are localizing matrices encoding the equality and inequality
+constraints. As the order $k$ increases, the relaxation becomes tighter. When flat truncation
+holds, the optimizer can be extracted from the moment data; if a sufficiently high relaxation is
+infeasible, then so is the original polynomial problem.
+
+The archimedean-type assumptions used in the convergence statements are important here. They
+prevent feasible moment sequences from escaping to infinity and make it possible for the relaxation hierarchy to recover
+actual minimizers and maximizers after finitely many steps.
+
+\section{Results and Discussion}
+The paper treats saddle-point problems for a polynomial objective over basic semialgebraic sets.
+Its central idea is to represent the Lagrange multipliers by polynomial maps $\lambda(x,y)$ and
+$\mu(x,y)$ when the constraint tuples are nonsingular. This converts the search for saddle points
+into an iterative polynomial optimization procedure: one first solves an upper-level system to obtain
+critical candidates, then checks each candidate through the two global one-sided problems
+$\min_{x\in X}F(x,y^\ast)$ and $\max_{y\in Y}F(x^\ast,y)$, and finally adds exclusion inequalities
+whenever a candidate fails the saddle inequalities. The resulting subproblems are treated by
+Lasserre-type moment relaxations, so the algorithm combines algebraic optimality conditions with
+global semidefinite certification.
+
+\subsection{Results}
+Let $K_0$ denote the feasible set of the initial upper-level problem and let $S_a$ denote the
+saddle-point set. The first termination statement is explicit: if $K_0\setminus S_a$ is finite, then
+the refinement loop stops after at most $|K_0\setminus S_a|$ iterations. In the generic case, the
+criticality system has only finitely many complex solutions, and Theorem 3.4 bounds their number by
+a degree-dependent quantity $M$. This yields a uniform upper bound of $M$ on the number of
+refinement steps and shows that the iteration count is controlled by the algebraic complexity of the
+input data.
+
+The semidefinite part of the analysis is also quantitative. For the upper-level problem and for the
+two lower-level verification problems, the paper proves finite convergence of the corresponding
+moment relaxations under its stated conditions. Once the relaxation order is sufficiently large, the
+SDP either becomes infeasible, which certifies that the polynomial problem has no feasible point, or
+satisfies flat truncation, which allows the true optimizer to be extracted from the moment data. The
+numerical examples are consistent with this picture: several saddle-point instances terminate after
+$1$ to $4$ iterations, one example requires $9$ iterations, and several nonexistence cases are
+detected after $3$ or $4$ iterations. Reported running times range from a few seconds to about
+$127$ seconds, while some direct KKT or quantifier-elimination computations in the comparison study
+do not finish within six hours.
+
+\subsection{Numerical illustration}
+To test the procedure we implemented it in Python (\texttt{saddle\_point.py}, with the moment
+relaxations in \texttt{polyopt.py}). Moment and localizing matrices are assembled as sparse linear
+maps of the truncated moment vector and the SDPs are solved with Clarabel; dependent rows of the
+localizing equalities are removed before solving, since interior-point solvers need full row rank.
+Flatness is tested with a relative rank tolerance of $10^{-4}$ and minimizers are extracted with the
+Henrion--Lasserre algorithm. The multiplier maps are those of the simplex,
+$\lambda_0=x^\top\nabla_xF$, $\lambda_i=\partial_{x_i}F-x^\top\nabla_xF$, and of the interval
+$\{1-x^2\ge0\}$, $\lambda=-xF'(x)/2$. Because the KKT set usually contains a continuum of points with
+the same value of $F$, the upper-level objective is perturbed by a small generic linear term
+($10^{-2}c^\top(x,y)$ with random $c$) so that the relaxation has a unique, flat minimizer; every
+cut remains valid because it holds at all saddle points.
+
+\begin{center}
+\begin{tabular}{p{0.38\linewidth}p{0.54\linewidth}}
+\hline
+Instance & Output of the algorithm\\
+\hline
+Example 6.1(i): $X=Y=\Delta_3$, $F=x_1x_2+x_2x_3+x_3y_1+x_1y_3+y_1y_2+y_2y_3$ &
+saddle point $x^\ast=(0,1,0)$, $y^\ast=(\tfrac12,\tfrac12,0)$, value $\tfrac14$, found in the first
+round (saddle gap $4\cdot10^{-8}$)\\
+$F=xy+x^2-y^2$ on $[-1,1]^2$ & saddle point $(0,0)$ in the first round\\
+$F=(x-y)^2$ on $[-1,1]^2$ & two candidates fail ($\vartheta_2-\vartheta_1\approx2.7$ and $4.0$);
+after two exclusion cuts the upper-level relaxation is infeasible, certifying that no saddle point
+exists ($\min\max=1>0=\max\min$)\\
+\hline
+\end{tabular}
+\end{center}
+
+For Example 6.1(i) the computed $y^\ast$ differs from the point $(\tfrac14,\tfrac12,\tfrac14)$
+reported in the paper, but both are saddle partners of $x^\ast$: $F(x^\ast,y)=y_2(1-y_2)$ is maximized by
+every $y\in\Delta_3$ with $y_2=\tfrac12$, and for any such $y$,
+$F(x,y)-\tfrac14=x_1x_2+x_2x_3+x_3y_1+x_1y_3\ge0$ on $\Delta_3$ with equality at $x^\ast$. The
+saddle-point set is therefore the segment $\{x^\ast\}\times\{y\in\Delta_3:\ y_2=\tfrac12\}$, and the
+algorithm returns one of its points. The whole run takes about 15 seconds.
+
+\subsection{Discussion}
+The main conceptual strength of the method is that it separates local algebraic structure from global
+saddle-point verification. The polynomial system built from $\lambda(x,y)$ and $\mu(x,y)$ supplies a
+finite candidate set under generic assumptions, but a candidate is accepted only after the two
+global optimization problems confirm the saddle inequalities. In this sense, the procedure goes
+beyond a stationary-point test: it does not merely list critical points, but distinguishes genuine
+saddle points from false candidates. The exclusion inequalities are important for the same reason,
+because each failed verification step contributes new information to the next upper-level problem
+instead of restarting the computation from the beginning.
+
+The limitations are tied to the same algebraic framework. The cleanest formulation depends on
+nonsingularity, since otherwise the multiplier maps need not admit a uniform polynomial
+representation in $(x,y)$, and the upper-level description becomes less direct. The convergence
+results for the moment relaxations also rely on the assumptions stated in the paper, and the
+computed optimizers remain numerical outputs of semidefinite solvers, so their accuracy is bounded
+by solver tolerances. Moreover, the degree-based bound $M$ is mainly a worst-case estimate and does
+not settle the overall complexity of the refinement process, especially in non-generic situations
+where infinitely many non-saddle critical points may arise. These limitations also indicate the most
+natural extensions: sharper iteration bounds, stronger treatment of degenerate cases, and broader
+applications to polynomial zero-sum games, robust min-max models, and related semialgebraic
+saddle-point problems.
+
+\end{document}

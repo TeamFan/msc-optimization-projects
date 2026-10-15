@@ -1,0 +1,29 @@
+{
+  "backend": "simulated_ckks",
+  "cost_checks": {
+    "jkls_agd_cap_eq_4": true,
+    "jkls_gd_cap_eq_6": true,
+    "proposed_agd_cap_eq_6": true,
+    "proposed_gd_cap_eq_9": true,
+    "proposed_plain_mults_lt_jkls": true
+  },
+  "mode": "full",
+  "qp_checks": {
+    "condition_number_match": true,
+    "stationarity_match": true
+  },
+  "vk_row_sums_unique": [
+    0.25
+  ],
+  "vk_shape": [
+    16,
+    16
+  ],
+  "wk_row_sums_unique": [
+    1.0
+  ],
+  "wk_shape": [
+    16,
+    16
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "agd_iteration_cap": 6,
+  "backend": "simulated_ckks",
+  "depth_budget": 18,
+  "figure2_repetitions": 100,
+  "figure_paths": [
+    "paper_figure2_he_agd_trajectories.pdf",
+    "paper_figure3_gd_agd_boxplots.pdf",
+    "paper_gd_vs_agd_win_region_heatmap.pdf",
+    "paper_depth_consumed_vs_error.pdf",
+    "paper_matrix_method_comparison.pdf"
+  ],
+  "gd_iteration_cap": 9,
+  "metrics_csv": "paper_metrics.csv",
+  "mode": "full",
+  "qualitative_result_verified": true,
+  "seed": 42,
+  "sweep_repetitions": 100,
+  "table2_paths": [
+    "table2_matrix_method_costs.csv"
+  ],
+  "table3_paths": [
+    "table3_gd_vs_agd_medians.csv"
+  ]
+}

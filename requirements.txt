@@ -1,0 +1,13 @@
+# Tested with Python 3.11
+numpy>=1.26
+scipy>=1.11
+matplotlib>=3.8
+pandas>=2.1
+scikit-learn>=1.3
+sympy>=1.12
+ortools>=9.8          # 01 operations research
+cma>=4.4              # 02 derivative-free optimization
+cvxpy>=1.5            # 08 polynomial saddle points (uses the bundled Clarabel solver)
+clarabel>=0.9
+torch>=2.1            # 04 stochastic optimization
+torchvision>=0.16

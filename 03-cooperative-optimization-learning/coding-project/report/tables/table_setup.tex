@@ -1,0 +1,18 @@
+\begin{table}[!t]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{4pt}
+\caption{Notation and experimental settings.}
+\label{tab:setup}
+\begin{tabularx}{\linewidth}{@{}L{0.12\linewidth}YY@{}}
+\toprule
+Block & Data and model & Settings and metrics \\
+\midrule
+Global & RBF kernel $k(x,z)=\exp(-(x-z)^2)$, Nystrom rank $m$, and coefficient vector $\alpha\in\mathbb{R}^m$. & Shared constants are $\sigma=\num{0.5}$, $\nu=\num{1}$, and seed $\num{42}$. The centralized reference solves $(\sigma^2K_{mm}+K_{nm}^\top K_{nm}+\nu I)\alpha^\star=K_{nm}^\top y$. \\
+Part I & First dataset; the first $n=\num{100}$ samples are split sequentially across $a=\num{5}$ agents, with $20$ points per agent and $m=\num{10}$ landmarks. & Line, small-world, and complete graphs are tested. The main metric is $\frac{1}{a}\sum_i \lVert \alpha_i^t-\alpha^\star\rVert_2$. The large-$n$ study keeps $m=\lceil \sqrt{n}\rceil$ and a fixed $200$-iteration DGD budget up to $n=\num{30000}$. \\
+Part II & Second dataset; five client datasets $(X_i,Y_i)$ of size $20$, with a uniform landmark grid on $[-1,1]$ of size $10$. & FedAvg uses $B\in\{20,15\}$, $C\in\{5,3\}$, and $E\in\{1,5,50\}$ under constant or diminishing rates. The metric is $F(\alpha_t)-F(\alpha^\star)$; SCAFFOLD reuses the same client splits. \\
+Part III & First dataset; baseline $(n,m,a)=(100,10,5)$ and larger-scale setting $(1000,33,100)$. & DP-DGD is evaluated for $\epsilon\in\{0.1,1,10\}$ using the theorem-aligned schedules from the course notes and the DP paper. The reported metric is the mean optimality gap, together with finite-horizon privacy audits. \\
+\bottomrule
+\end{tabularx}
+\end{table}

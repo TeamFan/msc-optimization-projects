@@ -1,0 +1,16 @@
+
+=== Example 6.1(i): simplex x simplex ===
+  round 1: candidate x=[0. 1. 0.], y=[0.5 0.5 0. ], F=0.250000, theta1=0.250000, theta2=0.250000, saddle gap=4.19e-08
+  -> saddle point found after 1 round(s), 0 exclusion cut(s)
+     x* = [0. 1. 0.], y* = [0.5 0.5 0. ], F* = 0.250000
+
+=== x y + x^2 - y^2 on [-1, 1]^2 ===
+  round 1: candidate x=[0.], y=[0.], F=0.000000, theta1=0.000000, theta2=-0.000000, saddle gap=-3.21e-09
+  -> saddle point found after 1 round(s), 0 exclusion cut(s)
+     x* = [0.], y* = [0.], F* = 0.000000
+
+=== (x - y)^2 on [-1, 1]^2 ===
+  round 1: candidate x=[-0.6489], y=[-0.6496], F=0.000001, theta1=0.000000, theta2=2.718781, saddle gap=2.72e+00
+  round 1: candidate x=[0.9995], y=[0.9996], F=0.000000, theta1=0.000000, theta2=3.998086, saddle gap=4.00e+00
+  round 2: upper-level relaxation infeasible -> no saddle point exists
+  -> no saddle point after 2 round(s), 2 exclusion cut(s)

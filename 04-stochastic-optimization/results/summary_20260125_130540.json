@@ -1,0 +1,55 @@
+{
+  "timestamp": "20260125_130540",
+  "random_seed": 42,
+  "convergence_criteria": {
+    "tuning": "Training objective convergence (ΔF < 1e-6 for 5 epochs or ‖∇‖ < 1e-4)",
+    "final": "Validation early stopping (patience=10)"
+  },
+  "summary": {
+    "SGD": {
+      "best_lr": 0.31622776601683794,
+      "best_alpha": 0.0,
+      "tuning_val_acc": 91.71666666666667,
+      "best_epoch": 38,
+      "best_val_acc": 91.69166666666666,
+      "best_train_loss": 0.2461543978104989,
+      "final_train_acc": 93.34583333333333,
+      "final_val_acc": 91.69166666666666,
+      "final_ce_loss": 0.2426505241394043,
+      "final_obj_loss": 0.2426505241394043,
+      "total_time": 40.555155754089355,
+      "epochs_trained": 49,
+      "convergence_reason": "Validation early stopping (patience=10)"
+    },
+    "Adam": {
+      "best_lr": 0.001,
+      "best_alpha": 0.0,
+      "tuning_val_acc": 92.05,
+      "best_epoch": 19,
+      "best_val_acc": 91.99166666666666,
+      "best_train_loss": 0.24392870559295018,
+      "final_train_acc": 93.53541666666666,
+      "final_val_acc": 91.99166666666666,
+      "final_ce_loss": 0.23565242587029933,
+      "final_obj_loss": 0.23565242587029933,
+      "total_time": 25.737403392791748,
+      "epochs_trained": 30,
+      "convergence_reason": "Validation early stopping (patience=10)"
+    },
+    "Adagrad": {
+      "best_lr": 0.1,
+      "best_alpha": 0.0,
+      "tuning_val_acc": 92.01666666666667,
+      "best_epoch": 20,
+      "best_val_acc": 92.075,
+      "best_train_loss": 0.23508398400743802,
+      "final_train_acc": 93.72083333333333,
+      "final_val_acc": 92.075,
+      "final_ce_loss": 0.22986362148821354,
+      "final_obj_loss": 0.22986362148821354,
+      "total_time": 25.254438638687134,
+      "epochs_trained": 31,
+      "convergence_reason": "Validation early stopping (patience=10)"
+    }
+  }
+}

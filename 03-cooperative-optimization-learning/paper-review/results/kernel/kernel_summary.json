@@ -1,0 +1,56 @@
+{
+  "backend": "simulated_ckks",
+  "condition_number": 387.829027904556,
+  "dimension": 10,
+  "figure_paths": [
+    "kernel_objective_and_error_curves.pdf",
+    "kernel_depth_budget_comparison.pdf",
+    "kernel_reconstruction.pdf"
+  ],
+  "he_agd": {
+    "algorithm": "AGD",
+    "backend": "simulated_ckks",
+    "final_depth": 18.0,
+    "final_error": 0.9671835522209647,
+    "final_gap": 2.902003581793265,
+    "iterations": 6,
+    "momentum": 0.903350711139138,
+    "step_size": 0.0025784557833241103
+  },
+  "he_gd": {
+    "algorithm": "GD",
+    "backend": "simulated_ckks",
+    "final_depth": 18.0,
+    "final_error": 1.0778604382261705,
+    "final_gap": 6.635375545407118,
+    "iterations": 9,
+    "momentum": 0.0,
+    "step_size": 0.005143648895405697
+  },
+  "metrics_csv": "kernel_metrics.csv",
+  "mode": "full",
+  "nu": 1.0,
+  "plain_agd": {
+    "algorithm": "AGD",
+    "backend": "plain",
+    "final_depth": 80.0,
+    "final_error": 0.012404632437457345,
+    "final_gap": 0.00047128949895025585,
+    "iterations": 80,
+    "momentum": 0.903350711139138,
+    "step_size": 0.0025784557833241103
+  },
+  "plain_gd": {
+    "algorithm": "GD",
+    "backend": "plain",
+    "final_depth": 80.0,
+    "final_error": 0.1389881965556601,
+    "final_gap": 1.5182095580307848,
+    "iterations": 80,
+    "momentum": 0.0,
+    "step_size": 0.005143648895405697
+  },
+  "seed": 42,
+  "sigma": 0.5,
+  "source": "first_database.pkl"
+}

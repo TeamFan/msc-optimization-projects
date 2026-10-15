@@ -1,0 +1,5 @@
+problem,geometry,algorithm,beta_name,final_objective_gap,final_test_accuracy,accuracy_pct
+simplex_lad_synthetic,entropy,entropy_mirror_descent,0.5,0.0015875428713651024,,
+simplex_lad_synthetic,euclidean,projected_subgradient,0.5,4.6993398151971844e-05,,
+ill_conditioned_logistic,diagonal_mahalanobis,mahalanobis_mirror_descent,0.5,0.018079121448499463,0.946,94.6
+ill_conditioned_logistic,euclidean,projected_subgradient,0.5,5.69306695617186,0.83,83.0

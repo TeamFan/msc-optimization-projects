@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
+
+# LaTeX intermediates
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+
+# Downloaded / regenerated data
+04-stochastic-optimization/data/
+05-online-learning/results/*_history.csv
+outcmaes/
+outcmaes*

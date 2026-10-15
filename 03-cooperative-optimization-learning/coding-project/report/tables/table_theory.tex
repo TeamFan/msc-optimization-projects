@@ -1,0 +1,21 @@
+\begin{table}[!htb]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.02}
+\setlength{\tabcolsep}{3.2pt}
+\caption{Parameter choices and checks; lecture-note bounds are used except for the DP schedule, which follows Wang--Nedic Theorem~2(3).}
+\label{tab:theory}
+\begin{tabularx}{\linewidth}{@{}L{0.10\linewidth}L{0.18\linewidth}L{0.23\linewidth}Y@{}}
+\toprule
+Method & Principle & Choice & Check \\
+\midrule
+DGD & Smooth bound $O(1/L)$. & $\eta_{\mathrm{DGD}}=0.2/L_{\max}$. & $L_{\max}=\num{1.12726e+02}$ and $\eta_{\mathrm{DGD}}=\num{1.77421e-03}<2/L_{\max}=\num{1.77421e-02}$; the baseline run is stable on all three undirected graphs. \\
+GT & Spectral-radius test. & $\eta_{\mathrm{GT}}=0.6/L_{\max}$. & $\rho(T(\eta_{\mathrm{GT}}))=\num{9.98935e-01}<1$, with a scanned threshold near $\num{6.13375e-03}$; the method remains accurate across graph topologies. \\
+Dual & Dual-ascent bound. & $\eta_{\mathrm{dual}}=0.9\cdot 2\mu_{\min}/\sigma_{\max}(A)^2$. & $\mu_{\min}=\num{2.00000e-01}$, $\sigma_{\max}(A)=\num{1.90211e+00}$, and $\eta_{\mathrm{dual}}=\num{9.95016e-02}<\num{1.10557e-01}$; the line-graph gap reaches the \num{1e-6} range. \\
+ADMM & Positive-penalty condition. & $\beta\in\{0.1,1,10,100\}$. & All tested penalties are admissible; $\beta=1$ and $\beta=10$ are the fastest practical choices. \\
+FedAvg & Smooth SGD bound. & $\eta_0=\num{2.000e-03}$ and $\eta_t=0.002/(1+0.01t)$. & $L_{\max}^{\mathrm{FL}}=\num{7.97264e+01}$ and $\eta_0<2/L_{\max}^{\mathrm{FL}}=\num{2.50858e-02}$; $E=50$ gives the best final error in both learning-rate schedules. \\
+SCAFFOLD & Control-variate correction. & Constant local rate $\eta=\num{2e-3}$, matched to FedAvg. & With the same local rate, the corrected runs outperform FedAvg at $E=50$ for both $C=5$ and $C=3$. \\
+DP-DGD & Summability conditions. & $\alpha_k=\frac{0.002}{1+0.001k}$, $\gamma_k=\frac{1}{1+0.001k^{0.9}}$, $\nu_k=\frac{0.01}{\epsilon}\bigl(1+0.001k^{0.1}\bigr)$. & On $3000$ steps, $\sum \alpha_k^2/\gamma_k=\num{4.24840e-03}$ and $\sum \alpha_k/\nu_k|_{\epsilon=1}=\num{2.76645e+02}$; smaller $\epsilon$ yields larger final gaps. \\
+\bottomrule
+\end{tabularx}
+\end{table}
