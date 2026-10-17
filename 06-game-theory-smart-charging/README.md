@@ -14,9 +14,12 @@ French electricity, using a decentralized best-response mechanism.
   `ℓ_NF + Σ ℓ_EV` over its plug-in window, subject to a 7 kW power limit and
   its energy need; solved with the **water-filling** heuristic.
 * **Best-Response Dynamics** — EVs update sequentially until the squared move
-  norm drops below η; the game is a potential game, so BRD converges (3–7
-  sweeps here). 500 simulated EVs are scaled up to the national fleet
-  ("meta-EVs").
+  norm drops below η; the game is an exact-potential team game and BRD reaches
+  the stopping criterion in 3–7 sweeps. 500 simulated EVs are scaled up to the
+  national fleet ("meta-EVs").
+* **Optimality** — because f_CO2 is piecewise linear, not every Nash equilibrium
+  need be optimal; valley-filling equilibria (what water-filling produces) are
+  optimal for any convex emission curve (report, Proposition 1).
 * **Reference policies** — Plug-and-Charge (PC), Off-Peak with seeded random
   start in 22:00–06:00 (OP), and a synchronized Off-Peak where the whole fleet
   starts at 22:00 (OP-22, herding stress test).
@@ -25,7 +28,8 @@ Data (`data/`): RTE eCO2mix day-ahead load forecasts (2019/2020, summer and
 winter days) and the EV arrival/departure/energy scenarios of the practical.
 
 ```bash
-python smart_charging.py    # ~1 min, writes results/
+python smart_charging.py       # ~1 min, writes results/
+python centralized_check.py    # ~10 s, BRD vs. centralized LP optimum (HiGHS)
 ```
 
 Outputs: load and EV-only profiles per scenario, water-filling views of the
@@ -43,9 +47,10 @@ MW·h above the nuclear and gas merit-order thresholds).
 | 2020 summer | 93,699 | 88,842 | 85,640 | −8.6 % |
 | 2020 winter | 470,941 | 419,486 | 399,541 | −15.2 % |
 
-BRD is never worse than the reference policies, keeps the peak load within
-2 % of the non-flexible peak (PC: +40–57 %, OP-22: +143–234 %) and never
-crosses the gas threshold. The gain over PC shrinks as nuclear availability
-increases (21.7 % at 0.3 → ~0 % at 0.9).
+BRD attains the centralized LP optimum in every scenario (relative gap below
+10⁻¹⁵, `results/centralized_check.csv`), is never worse than the reference
+policies, keeps the peak load within 2 % of the non-flexible peak (PC: +40–57 %,
+OP-22: +143–234 %) and never crosses the gas threshold. The gain over PC shrinks
+as nuclear availability increases (21.7 % at 0.3 → ~0 % at 0.9).
 
 The report is [`report/smart_charging_report.pdf`](report/smart_charging_report.pdf).

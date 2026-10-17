@@ -1,0 +1,5 @@
+year,season,brd_sweeps,pc_co2_t,brd_co2_t,lp_opt_co2_t,brd_relative_gap_percent,lp_reduction_vs_pc_percent
+2019,summer,5,143790,141684,141684,-2.15392e-14,1.46471
+2019,winter,3,395700,332257,332257,-3.67397e-14,16.0332
+2020,summer,7,93698.9,85640.2,85640.2,-5.3452e-14,8.60067
+2020,winter,4,470941,399541,399541,-7.63817e-14,15.1613
