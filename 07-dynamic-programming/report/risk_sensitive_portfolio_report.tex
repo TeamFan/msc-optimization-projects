@@ -49,7 +49,7 @@ This is equivalent to minimizing the expectation of a product of random variable
 \[
   \min_\pi\ \E_x^\pi\Big[\prod_{t=0}^{T-1}\big(e^{r}+a_t^\top(Z_{t+1}-e^{r}\mathbf 1)\big)^{-\gamma/2}\Big].
 \]
-The multiplicative problem is converted to an equivalent additive MDP via the following components:
+A change of measure separates the one-period exponential moment from the regime dynamics, through the following components:
 \begin{enumerate}
   \item \textbf{Exponential moment:}
   \[
@@ -64,10 +64,19 @@ The multiplicative problem is converted to an equivalent additive MDP via the fo
     c_\gamma(x,a):=-\frac{2}{\gamma}\ln m_\gamma(x,a).
   \]
 \end{enumerate}
+With $\theta:=-\gamma/2<0$, the optimal growth rate is characterized by the multiplicative Poisson equation
+\begin{equation}\label{eq:mult-poisson}
+  \lambda\,w(x)=\min_{a\in A}\ m_\gamma(x,a)\sum_{y\in E}P^\gamma(x,a,y)\,w(y),\qquad w>0,\qquad \rho_\gamma=\frac{1}{\theta}\ln\lambda .
+\end{equation}
+Writing $w=e^{\theta h}$ and dividing the logarithm by $\theta<0$ gives
+\[
+  \rho_\gamma+h(x)=\max_{a\in A}\Big\{c_\gamma(x,a)+\frac{1}{\theta}\ln\sum_{y\in E}P^\gamma(x,a,y)\,e^{\theta h(y)}\Big\}.
+\]
+The stage term $c_\gamma$ is additive, but the continuation term is a log-sum-exp under $P^\gamma$ rather than the expectation $\sum_yP^\gamma(x,a,y)h(y)$. The change of measure therefore does not produce an ordinary (risk-neutral) average-reward MDP: the problem remains risk-sensitive, and the linear average-reward equation is recovered only in the limit $\gamma\to0$ (Section~3).
 
 \section{The Risk-Seeking Problem ($\gamma<0$)}
 
-For the risk-seeking case, the problem is an average-reward MDP. The objective is to find a policy $\pi$ that maximizes the long-run risk-adjusted growth rate, characterized by the ergodic dynamic programming equation. Let $h_\gamma(x)$ be the relative value function and $\rho_\gamma$ the optimal average reward (growth rate). The Bellman equation is
+For the risk-seeking case, the criterion is again a risk-sensitive long-run criterion. The objective is to find a policy $\pi$ that maximizes the long-run risk-adjusted growth rate, characterized by the ergodic dynamic programming equation. Let $h_\gamma(x)$ be the relative value function and $\rho_\gamma$ the optimal average reward (growth rate). The Bellman equation is
 \begin{equation}\label{eq:rs-bellman}
   \rho_\gamma+h_\gamma(x)=\max_{a\in A}\Big\{r(x,a)+\frac{1}{\gamma}\ln\sum_{y\in E}P(y\mid x,a)\,e^{\gamma h_\gamma(y)}\Big\},
 \end{equation}
@@ -166,7 +175,7 @@ We now solve the risk-sensitive portfolio problem of Sections~1--3 numerically f
 \begin{equation}\label{eq:num-bellman}
   \rho_\gamma+h(x)=\max_{a\in A}\ \frac{1}{\theta}\ln\sum_{y\in E}Q_{x,y}\,\E\big[G(a,Z)^{\theta}\mid x,y\big]\,e^{\theta h(y)} .
 \end{equation}
-For $\gamma>0$ ($\theta<0$), maximizing the right-hand side is minimizing the exponential moment, i.e.\ \eqref{eq:num-bellman} is the multiplicative Poisson equation of Section~2 written for $w=e^{\theta h}$, with $\rho_\gamma=-\frac{2}{\gamma}\ln\lambda$ for its eigenvalue $\lambda$. For $\gamma<0$ it is equation~\eqref{eq:rs-bellman} with the random one-period log-return kept inside the exponential. As $\gamma\to0$ it reduces to \eqref{eq:ar-bellman} with $r(x,a)=\sum_yQ_{x,y}\E[\ln G(a,Z)\mid x,y]$. We solve \eqref{eq:num-bellman} with RVI (reference state: bull, tolerance $10^{-12}$; 31--37 iterations).
+For $\gamma>0$ ($\theta<0$), maximizing the right-hand side is minimizing the exponential moment, i.e.\ \eqref{eq:num-bellman} is the multiplicative Poisson equation~\eqref{eq:mult-poisson} of Section~2 written for $w=e^{\theta h}$, with $\rho_\gamma=-\frac{2}{\gamma}\ln\lambda$ for its eigenvalue $\lambda$. For $\gamma<0$ it is equation~\eqref{eq:rs-bellman} with the random one-period log-return kept inside the exponential. As $\gamma\to0$ it reduces to \eqref{eq:ar-bellman} with $r(x,a)=\sum_yQ_{x,y}\E[\ln G(a,Z)\mid x,y]$. We solve \eqref{eq:num-bellman} with RVI (reference state: bull, tolerance $10^{-12}$; 31--37 iterations).
 
 \paragraph{Verification.} Every optimal stationary policy $a^*(\cdot)$ is evaluated independently: its risk-sensitive growth rate equals $\frac1\theta\ln\lambda_{\mathrm{PF}}(K)$, where $\lambda_{\mathrm{PF}}$ is the Perron--Frobenius eigenvalue of the twisted kernel $K(x,y)=Q_{x,y}\,\E[G(a^*(x),Z)^{\theta}\mid x,y]$ (stationary-distribution average of $r$ for $\gamma=0$). This value agrees with the RVI value $\rho_\gamma$ to $10^{-12}$ for every $\gamma$. In addition, a $200\,000$-month simulation of the risk-neutral optimal policy gives an average log-growth of $0.006919\pm0.000217$ (95\% confidence interval), consistent with $\rho_0=0.006839$. Finally, $\rho_{-0.1}=0.006908$ and $\rho_{0.1}=0.006774$ bracket $\rho_0$, as expected from the continuity of \eqref{eq:num-bellman} in $\gamma$.
 
