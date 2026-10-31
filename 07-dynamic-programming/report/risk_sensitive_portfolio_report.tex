@@ -76,9 +76,9 @@ The stage term $c_\gamma$ is additive, but the continuation term is a log-sum-ex
 
 \section{The Risk-Seeking Problem ($\gamma<0$)}
 
-For the risk-seeking case, the criterion is again a risk-sensitive long-run criterion. The objective is to find a policy $\pi$ that maximizes the long-run risk-adjusted growth rate, characterized by the ergodic dynamic programming equation. Let $h_\gamma(x)$ be the relative value function and $\rho_\gamma$ the optimal average reward (growth rate). The Bellman equation is
+For the risk-seeking case, the criterion is again a risk-sensitive long-run criterion. The objective is to find a policy $\pi$ that maximizes the long-run risk-adjusted growth rate, characterized by the ergodic dynamic programming equation. Let $h_\gamma(x)$ be the relative value function and $\rho_\gamma$ the optimal average reward (growth rate). With $\theta=-\gamma/2>0$, the Bellman equation is
 \begin{equation}\label{eq:rs-bellman}
-  \rho_\gamma+h_\gamma(x)=\max_{a\in A}\Big\{r(x,a)+\frac{1}{\gamma}\ln\sum_{y\in E}P(y\mid x,a)\,e^{\gamma h_\gamma(y)}\Big\},
+  \rho_\gamma+h_\gamma(x)=\max_{a\in A}\Big\{r(x,a)+\frac{1}{\theta}\ln\sum_{y\in E}P(y\mid x,a)\,e^{\theta h_\gamma(y)}\Big\},
 \end{equation}
 where $r(x,a)$ is the one-period log-return and $P(y\mid x,a)$ are the state transition probabilities. As the risk-sensitivity parameter $\gamma\to0$, a first-order Taylor expansion shows that \eqref{eq:rs-bellman} converges to the standard average-reward Bellman equation
 \begin{equation}\label{eq:ar-bellman}
