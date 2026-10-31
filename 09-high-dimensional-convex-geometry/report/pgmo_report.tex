@@ -69,7 +69,7 @@ for every isotropic log-concave random vector $X$ in $\mathbb{R}^n$. Since $\mat
 
 Bourgain's slicing problem is more geometric. It asks for a universal lower bound on the volume of a central hyperplane section of any volume-one convex body. Although this question is formulated in terms of sections, it turns out to be closely connected with the same isotropic and probabilistic structure that governs thin shells. A radial statement about $|X|$ can therefore have strong consequences for codimension-one geometry.
 
-The Kannan--Lov\'asz--Simonovits conjecture is stronger than both. In one standard form, it predicts that
+The Kannan--Lov\'asz--Simonovits conjecture \cite{KLS95} is stronger than both. In one standard form, it predicts that
 \[
 \mathrm{Var}(f(X))\leq C\,\mathbb{E}|\nabla f(X)|^2
 \]
@@ -81,13 +81,13 @@ for every sufficiently regular observable $f$ under an isotropic log-concave law
 
 The first step is to understand why Gaussian behavior appears so often in high dimension. On the sphere, Lipschitz functions are strongly concentrated around a central value, with fluctuations of size roughly $1/\sqrt{n}$. This means that regular observables on high-dimensional spheres are nearly constant, and it explains why typical projections and sections often behave as if a Gaussian law were present in the background.
 
-The thin-shell theorem makes this link explicit. In a simplified form, it says that if an isotropic random vector $X$ satisfies
+The thin-shell theorem, i.e.\ the central limit theorem for convex sets \cite{ABP03,Kla07}, makes this link explicit. In a simplified form, it says that if an isotropic random vector $X$ satisfies
 \[
 \mathbb{E}\left(\frac{|X|}{\sqrt{n}}-1\right)^2\leq \varepsilon^2,
 \]
 then for most directions $\theta\in S^{n-1}$ the marginal $\langle X,\theta\rangle$ is close to the standard Gaussian law. The theorem separates two tasks that should be distinguished: first establish radial concentration, and then deduce Gaussian marginals from that concentration. The second step is geometric and probabilistic; the first requires deeper structure.
 
-Examples clarify the content of this theorem. Independent coordinates with bounded fourth moments satisfy the thin-shell assumption, so the result is consistent with the classical central limit phenomenon. A regular simplex gives a more rigid example, since its mass lies exactly on a sphere and still has approximately Gaussian marginals in most directions. By contrast, a mixture of two spheres of very different radii is isotropic but not thin-shell, and its marginals are far from Gaussian. The message is that isotropicity alone is not enough: what matters is the radial organization of the mass.
+Examples clarify the content of this theorem. Independent coordinates with bounded fourth moments satisfy the thin-shell assumption, so the result is consistent with the classical central limit phenomenon. A regular simplex is far less symmetric than the cube or the ball and its vertices lie on a sphere, but the uniform measure on the solid simplex in isotropic position still satisfies a thin-shell bound and has approximately Gaussian marginals in most directions (see the simulation below). By contrast, a mixture of two spheres of very different radii is isotropic but not thin-shell, and its marginals are far from Gaussian. The message is that isotropicity alone is not enough: what matters is the radial organization of the mass.
 
 \subsection{Log-Concavity and the Bochner Framework}
 
@@ -115,7 +115,7 @@ turns variance estimates into statements about infinitesimal transport and diffe
 
 \subsection{Transport, Gaussian Tilts, and Brownian Coupling}
 
-The recent main theorem states that for every isotropic log-concave random vector $X$ in $\mathbb{R}^n$,
+The recent main theorem of Klartag and Lehec \cite[Theorem~1.1]{KL25} states that for every isotropic log-concave random vector $X$ in $\mathbb{R}^n$,
 \[
 \mathrm{Var}(|X|^2)\leq Cn.
 \]
@@ -123,7 +123,7 @@ Consequently,
 \[
 \mathbb{E}(|X|-\sqrt{n})^2\leq C.
 \]
-This is the sharp thin-shell bound up to the value of the universal constant. It is not only a radial statement: together with known geometric implications, it yields Bourgain's slicing theorem.
+This is the sharp thin-shell bound up to the value of the universal constant. It is not only a radial statement: through the implication from thin shell to slicing \cite{EK11}, it gives a new proof of Bourgain's slicing theorem, which had been established shortly before by Klartag and Lehec using Guan's bound \cite{Gua24,KL24}.
 
 The proof does not estimate $\mathrm{Var}(|X|^2)$ directly. Instead, it reduces the problem to an $H^{-1}$ estimate for coordinate functions, namely
 \[
@@ -147,7 +147,7 @@ a_t(y)=\nabla\Lambda_t(y), \qquad A_t(y)=\nabla^2\Lambda_t(y),
 \]
 become the central dynamical quantities.
 
-The last step is a Brownian or pathwise coupling of these tilts. Instead of studying the deformation only through partial differential equations, one follows a stochastic process of the form
+The last step is a Brownian or pathwise coupling of these tilts, in the spirit of Eldan's stochastic localization \cite{Eld13}; Klartag and Lehec call their version parallel coupling \cite{KL25}. Instead of studying the deformation only through partial differential equations, one follows a stochastic process of the form
 \[
 \theta_t=\theta_0+w_t+\int_0^t a_s(\theta_s)\,ds,
 \]
@@ -214,5 +214,16 @@ For the three convex bodies the ratio stays bounded, in agreement with $\mathrm{
 The principal result is the sharp thin-shell bound for isotropic log-concave measures. It shows that the mass is confined to a shell of bounded width around the radius $\sqrt{n}$, uniformly in the dimension. Beyond radial concentration, this yields an affirmative solution to Bourgain's slicing problem through known geometric implications.
 
 Another important conclusion is methodological. The proof combines geometric concentration, the stability theory of log-concavity, Bochner-type curvature estimates, negative Sobolev norms, transport inequalities, and stochastic localization. The result is therefore valuable not only as a theorem, but also as a synthesis of several modern methods in high-dimensional convex geometry.
+
+\begin{thebibliography}{KLS95}\small
+\bibitem[ABP03]{ABP03} M.~Anttila, K.~Ball, I.~Perissinaki. The central limit problem for convex bodies. \emph{Trans. Amer. Math. Soc.} 355 (2003), 4723--4735.
+\bibitem[EK11]{EK11} R.~Eldan, B.~Klartag. Approximately Gaussian marginals and the hyperplane conjecture. \emph{Contemp. Math.} 545 (2011), 55--68.
+\bibitem[Eld13]{Eld13} R.~Eldan. Thin shell implies spectral gap up to polylog via a stochastic localization scheme. \emph{Geom. Funct. Anal.} 23 (2013), 532--569.
+\bibitem[Gua24]{Gua24} Q.~Guan. A note on Bourgain's slicing problem. arXiv:2412.09075, 2024.
+\bibitem[Kla07]{Kla07} B.~Klartag. A central limit theorem for convex sets. \emph{Invent. Math.} 168 (2007), 91--131.
+\bibitem[KL24]{KL24} B.~Klartag, J.~Lehec. Affirmative resolution of Bourgain's slicing problem using Guan's bound. arXiv:2412.15044, 2024.
+\bibitem[KL25]{KL25} B.~Klartag, J.~Lehec. Thin-shell bounds via parallel coupling. arXiv:2507.15495, 2025.
+\bibitem[KLS95]{KLS95} R.~Kannan, L.~Lov\'asz, M.~Simonovits. Isoperimetric problems for convex bodies and a localization lemma. \emph{Discrete Comput. Geom.} 13 (1995), 541--559.
+\end{thebibliography}
 
 \end{document}
